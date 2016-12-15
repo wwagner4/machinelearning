@@ -44,7 +44,7 @@ class LinearRegressionSuite extends FunSuite {
 
   def dfACost(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
     val m = trainingSet.size
-    val hf = hypothesisFunc(a, b) _
+    val hf = hypothesisFunc(a, b)(_)
     val s = trainingSet
       .map { case (x, y) => hf(x) - y }
       .sum
@@ -53,7 +53,7 @@ class LinearRegressionSuite extends FunSuite {
 
   def dfBCost(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
     val m = trainingSet.size
-    val hf = hypothesisFunc(a, b) _
+    val hf = hypothesisFunc(a, b)(_)
     val s = trainingSet
       .map { case (x, y) => (hf(x) - y) * x }
       .sum
@@ -68,7 +68,7 @@ class LinearRegressionSuite extends FunSuite {
 
   test("Gradient decent") {
     println("-- GRADIENT DECENT -----------------------------")
-    val fs = oneStep(0.1)(trainingSet) _
+    val fs = oneStep(0.1)(trainingSet)(_, _)
     val steps = Stream.iterate((0.0, 0.0)) { case (a, b) => fs(a, b) }
     steps.take(100)
       .zipWithIndex
