@@ -39,4 +39,34 @@ class LinearRegressionSuite extends FunSuite {
 
   }
 
+  def dfACost(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
+    val m = trainingSet.size
+    val hf = hypothesisFunc(a, b)_
+    val s = trainingSet
+      .map { case (x, y) => hf(x) - y }
+      .sum
+    s / m
+  }
+
+  def dfBCost(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
+    val m = trainingSet.size
+    val hf = hypothesisFunc(a, b)_
+    val s = trainingSet
+      .map { case (x, y) => (hf(x) - y) * x }
+      .sum
+    s / m
+  }
+
+  def oneStep(a: Double, b:Double): (Double, Double) = {
+    val alpha = 0.1
+    ???
+
+  }
+
+  test("Gradient decent") {
+
+
+
+  }
+
 }
