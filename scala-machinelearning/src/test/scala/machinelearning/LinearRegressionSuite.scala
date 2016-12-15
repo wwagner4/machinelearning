@@ -11,11 +11,14 @@ class LinearRegressionSuite extends FunSuite {
     (2.1, 3.0),
     (4.8, 6.1))
 
-  def hypothesisFunc(a: Double, b: Double)(x: Double) = a + b * x
 
-  def costFunc(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
+  def linearFunc(a: Double, b: Double)(x: Double): Double = a + b * x
+
+  type HypothesisFuncType = (Double, Double) => (Double) => Double
+
+  def costFunc(hypothesis: HypothesisFuncType)(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
     val m = trainingSet.size
-    val hf = hypothesisFunc(a, b) _
+    val hf = hypothesis(a, b)
     val s = trainingSet
       .map { case (x, y) => hf(x) - y }
       .map(math.pow(_, 2))
@@ -34,42 +37,41 @@ class LinearRegressionSuite extends FunSuite {
 
     println("-- COST FUNCTION -----------------------------")
     parameters.foreach { case (a, b) =>
-      val cf = costFunc(a, b) _
+      val cf = costFunc(linearFunc)(a, b) _
       val cost = cf(trainingSet)
       println("  (%5.2f, %5.2f) -> %5.5f" format(a, b, cost))
+    }
+  }
 
+  def oneStep(alpha: Double)(hypothesis: HypothesisFuncType)(trainingSet: List[(Double, Double)])(a: Double, b: Double): (Double, Double) = {
+
+    def dfACost: Double = {
+      val m = trainingSet.size
+      val hf = hypothesis(a, b)(_)
+      val s = trainingSet
+        .map { case (x, y) => hf(x) - y }
+        .sum
+      s / m
     }
 
-  }
+    def dfBCost: Double = {
+      val m = trainingSet.size
+      val hf = hypothesis(a, b)(_)
+      val s = trainingSet
+        .map { case (x, y) => (hf(x) - y) * x }
+        .sum
+      s / m
+    }
 
-  def dfACost(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
-    val m = trainingSet.size
-    val hf = hypothesisFunc(a, b)(_)
-    val s = trainingSet
-      .map { case (x, y) => hf(x) - y }
-      .sum
-    s / m
-  }
-
-  def dfBCost(a: Double, b: Double)(trainingSet: List[(Double, Double)]): Double = {
-    val m = trainingSet.size
-    val hf = hypothesisFunc(a, b)(_)
-    val s = trainingSet
-      .map { case (x, y) => (hf(x) - y) * x }
-      .sum
-    s / m
-  }
-
-  def oneStep(alpha: Double)(trainingSet: List[(Double, Double)])(a: Double, b: Double): (Double, Double) = {
-    val a1 = a - alpha * dfACost(a, b)(trainingSet)
-    val b1 = b - alpha * dfBCost(a, b)(trainingSet)
+    val a1 = a - alpha * dfACost
+    val b1 = b - alpha * dfBCost
     (a1, b1)
   }
 
   test("Gradient decent") {
     println("-- GRADIENT DECENT -----------------------------")
-    val fs = oneStep(0.1)(trainingSet)(_, _)
-    val steps = Stream.iterate((0.0, 0.0)) { case (a, b) => fs(a, b) }
+    val os = oneStep(0.1)(linearFunc)(trainingSet)(_, _)
+    val steps = Stream.iterate((0.0, 0.0)) { case (a, b) => os(a, b) }
     steps.take(100)
       .zipWithIndex
       .filter { case (_, i) => i % 10 == 0 }
