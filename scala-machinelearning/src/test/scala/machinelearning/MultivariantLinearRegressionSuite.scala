@@ -16,7 +16,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   /**
     * Same values as in the LinearRegressionSuite
     */
-  val trainingSet01 = List(
+  val trainingSet01 = Vector(
     Sample(DenseVector(1.0, 0.0), 2.1),
     Sample(DenseVector(1.0, 0.5), 2.2),
     Sample(DenseVector(1.0, 1.0), 3.2),
@@ -26,7 +26,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   /**
     * Other random testfeatures
     */
-  val trainingSet02 = List(
+  val trainingSet02 = Vector(
     Sample(DenseVector(1.0, 0.0, 0.3, 1.1), 2.1),
     Sample(DenseVector(1.0, 0.5, 2.3, 0.7), 2.2),
     Sample(DenseVector(1.0, 1.0, 0.3, 1.2), 3.2),
@@ -61,12 +61,12 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     thet.t * x
   }
 
-  def costFunc(hyp: HypType)(trainingSet: List[Sample])(thet: Vector[Double]): Double = {
+  def costFunc(hyp: HypType)(trainingSet: Vector[Sample])(thet: Vector[Double]): Double = {
     val m = trainingSet.size
     val s = trainingSet.map { s =>
       math.pow(thet.t * s.x - s.y, 2)
-    }.sum
-    s / ( 2 * m)
+    }
+    sum(s) / ( 2 * m)
   }
 
   test("Cost function training set 01") {
@@ -81,7 +81,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     val cf = costFunc(linearFunc)(trainingSet01) _
     thet.foreach{t =>
       val cost = cf(t)
-      println("   %30s -> %10.2f" format(t, cost))
+      println("   %40s -> %10.2f" format(t, cost))
     }
   }
 
@@ -97,8 +97,15 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     val cf = costFunc(linearFunc)(trainingSet02) _
     thet.foreach{t =>
       val cost = cf(t)
-      println("   %30s -> %10.2f" format(t, cost))
+      println("   %40s -> %10.2f" format(t, cost))
     }
   }
+
+  def oneStep(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
+             (thet: Vector[Double]): Vector[Double] = {
+    val hf = hypo(thet)(_)
+    ???
+  }
+
 
 }
