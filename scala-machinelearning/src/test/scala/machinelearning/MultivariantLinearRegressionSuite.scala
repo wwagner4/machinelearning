@@ -81,7 +81,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     val cf = costFunc(linearFunc)(trainingSet01) _
     thet.foreach { t =>
       val cost = cf(t)
-      println("   %40s -> %10.2f" format(format(t), cost))
+      println(f"${format(t)}%30s -> $cost%10.2f")
     }
   }
 
@@ -93,53 +93,50 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       DenseVector(1.0, 1.0, 1.0, 1.0),
       DenseVector(2.1057738032395816, 0.8435673329439073, -0.27329323871209565, -0.033870769165503745))
 
-        println ("-- COST FUNCTION -----------------------------")
+    println("-- COST FUNCTION -----------------------------")
     val cf = costFunc(linearFunc)(trainingSet02) _
     thet.foreach { t =>
       val cost = cf(t)
-      println("   %40s -> %10.2f" format(format(t), cost))
+      println(f"${format(t)}%40s -> $cost%10.2f")
     }
   }
 
-  def oneStep(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
+  def gradientDescent(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
              (thet: Vector[Double]): Vector[Double] = {
     val m = trainingSet.size.toDouble
     val hf = hypo(thet)(_)
-
-    def inner(i: Int) = trainingSet.map { s =>
-      (hf(s.x) - s.y) * s.x(i)
+    val array = thet.toArray.zipWithIndex.map { case (t, i) =>
+      val inner = trainingSet.map { s =>
+        (hf(s.x) - s.y) * s.x(i)
+      }
+      t - alpha * sum(inner) / m
     }
-
-    var i = -1
-    for (t <- thet) yield {
-      i += 1
-      t - alpha * sum(inner(i)) / m
-    }
+    DenseVector(array)
   }
 
-  test("Gradient decent 01") {
-    println("-- GRADIENT DECENT -----------------------------")
-    val os = oneStep(0.1)(linearFunc)(trainingSet01) _
+  test("Gradient descent 01") {
+    println("-- GRADIENT DESCENT -----------------------------")
+    val gd = gradientDescent(0.1)(linearFunc)(trainingSet01) _
     val initialThet: Vector[Double] = DenseVector(0.0, 0.0)
-    val steps = Stream.iterate(initialThet)(thet => os(thet))
+    val steps = Stream.iterate(initialThet)(thet => gd(thet))
     steps.take(100)
       .zipWithIndex
       .filter { case (_, i) => i % 5 == 0 }
       .foreach { case (thet, i) => println(f"$i%4d : ${format(thet)}") }
   }
 
-  test("Gradient decent 02") {
-    println("-- GRADIENT DECENT -----------------------------")
-    val os = oneStep(0.05)(linearFunc)(trainingSet02) _
+  test("Gradient descent 02") {
+    println("-- GRADIENT DESCENT -----------------------------")
+    val gd = gradientDescent(0.05)(linearFunc)(trainingSet02) _
     val initialThet: Vector[Double] = DenseVector(0.0, 0.0, 0.0, 0.0)
-    val steps = Stream.iterate(initialThet)(thet => os(thet))
+    val steps = Stream.iterate(initialThet)(thet => gd(thet))
     steps.take(500)
       .zipWithIndex
       .filter { case (_, i) => i % 50 == 0 }
       .foreach { case (thet, i) => println(f"$i%4d : ${format(thet)}") }
   }
 
-  def format(v: Vector[Double]): String = {
+  private def format(v: Vector[Double]): String = {
     val values = v.toArray.map(v => " %.2f" format v).mkString(", ")
     f"Vector[$values]"
   }

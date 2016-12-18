@@ -43,7 +43,7 @@ class LinearRegressionSuite extends FunSuite {
     }
   }
 
-  def oneStep(alpha: Double)(hypothesis: HypothesisFuncType)(trainingSet: List[(Double, Double)])(a: Double, b: Double): (Double, Double) = {
+  def gradientDescent(alpha: Double)(hypothesis: HypothesisFuncType)(trainingSet: List[(Double, Double)])(a: Double, b: Double): (Double, Double) = {
 
     def dfACost: Double = {
       val m = trainingSet.size
@@ -68,10 +68,10 @@ class LinearRegressionSuite extends FunSuite {
     (a1, b1)
   }
 
-  test("Gradient decent") {
-    println("-- GRADIENT DECENT -----------------------------")
-    val os = oneStep(0.1)(linearFunc)(trainingSet)(_, _)
-    val steps = Stream.iterate((0.0, 0.0)) { case (a, b) => os(a, b) }
+  test("Gradient descent") {
+    println("-- GRADIENT DESCENT -----------------------------")
+    val gd = gradientDescent(0.1)(linearFunc)(trainingSet)(_, _)
+    val steps = Stream.iterate((0.0, 0.0)) { case (a, b) => gd(a, b) }
     steps.take(100)
       .zipWithIndex
       .filter { case (_, i) => i % 10 == 0 }
