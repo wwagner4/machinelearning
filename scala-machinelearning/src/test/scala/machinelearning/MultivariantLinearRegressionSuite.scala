@@ -16,7 +16,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   /**
     * Same values as in the LinearRegressionSuite
     */
-  val trainingSet01 = Vector(
+  val trainingSet01 = List(
     Sample(DenseVector(1.0, 0.0), 2.1),
     Sample(DenseVector(1.0, 0.5), 2.2),
     Sample(DenseVector(1.0, 1.0), 3.2),
@@ -26,7 +26,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   /**
     * Other random testfeatures
     */
-  val trainingSet02 = Vector(
+  val trainingSet02 = List(
     Sample(DenseVector(1.0, 0.0, 0.3, 1.1), 2.1),
     Sample(DenseVector(1.0, 0.5, 2.3, 0.7), 2.2),
     Sample(DenseVector(1.0, 1.0, 0.3, 1.2), 3.2),
@@ -61,12 +61,12 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     thet.t * x
   }
 
-  def costFunc(hyp: HypType)(trainingSet: Vector[Sample])(thet: Vector[Double]): Double = {
+  def costFunc(hyp: HypType)(trainingSet: List[Sample])(thet: Vector[Double]): Double = {
     val m = trainingSet.size
     val s = trainingSet.map { s =>
       math.pow(thet.t * s.x - s.y, 2)
     }
-    sum(s) / ( 2 * m)
+    sum(s) / (2 * m)
   }
 
   test("Cost function training set 01") {
@@ -79,7 +79,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
     println("-- COST FUNCTION -----------------------------")
     val cf = costFunc(linearFunc)(trainingSet01) _
-    thet.foreach{t =>
+    thet.foreach { t =>
       val cost = cf(t)
       println("   %40s -> %10.2f" format(t, cost))
     }
@@ -95,7 +95,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
     println("-- COST FUNCTION -----------------------------")
     val cf = costFunc(linearFunc)(trainingSet02) _
-    thet.foreach{t =>
+    thet.foreach { t =>
       val cost = cf(t)
       println("   %40s -> %10.2f" format(t, cost))
     }
@@ -103,9 +103,27 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   def oneStep(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
              (thet: Vector[Double]): Vector[Double] = {
+    val m = trainingSet.size.toDouble
     val hf = hypo(thet)(_)
-    ???
+    def inner(i: Int) = trainingSet.map { s =>
+      (hf(s.x) - s.y) * s.x(i)
+    }
+    var i = -1
+    for(t <- thet) yield {
+      i += 1
+      t - alpha * sum(inner(i)) / m
+    }
   }
 
+  test("Gradient decent") {
+    println("-- GRADIENT DECENT -----------------------------")
+    val os = oneStep(0.1)(linearFunc)(trainingSet01) _
+    val initialThet: Vector[Double] = DenseVector(0.0, 0.0)
+    val steps = Stream.iterate(initialThet)(thet => os(thet))
+    steps.take(100)
+      .zipWithIndex
+      .filter { case (_, i) => i % 5 == 0 }
+      .foreach { case (thet, i) => println(f"$i%4d : $thet%s") }
+  }
 
 }

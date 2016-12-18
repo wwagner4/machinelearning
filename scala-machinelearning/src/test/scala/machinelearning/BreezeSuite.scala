@@ -5,9 +5,8 @@ import breeze.linalg._
 
 class BreezeSuite extends FunSuite {
 
-  test("performance inverse matrix") {
-    //    List(5, 5, 10, 100, 200, 500, 1000, 2000, 5000).foreach{n =>
-    List(5, 5, 10, 100).foreach { n =>
+  ignore("performance inverse matrix") {
+    List(5, 5, 10, 100, 200, 500, 1000, 2000, 5000).foreach{n =>
       val y = DenseMatrix.rand[Double](n, n)
 
       val t1 = System.currentTimeMillis()
@@ -24,6 +23,13 @@ class BreezeSuite extends FunSuite {
     val x: Vector[Double] = DenseVector(1.0, 2.0, 3.0)
     println("x   : %s" format x)
     println("x'  : %s" format x.t)
+
+    val x0 = x(0)
+    println(f"x1   : $x0%.2f")
+    val x1 = x(1)
+    println(f"x2   : $x1%.2f")
+    val x2 = x(2)
+    println(f"x3   : $x2%.2f")
 
     val y = x.t * x
     println("x' * x : %s" format y)
