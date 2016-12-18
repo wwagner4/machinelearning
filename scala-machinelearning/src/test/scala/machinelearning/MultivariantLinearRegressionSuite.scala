@@ -39,18 +39,20 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     * Linear function of type 'HypType'
     */
   def linearFunc(thet: Vector[Double])(x: Vector[Double]): Double = {
-    //require(thet.size > 0)
-    //require(x.size > 0)
-    //require(thet.size == x.size)
+    require(thet.size > 0)
+    require(x.size > 0)
+    require(thet.size == x.size)
 
-    //sum(thet * x)
-    ???
+    thet.t * x
   }
 
   def costFunc(hyp: HypType)(thet: Vector[Double])(trainingSet: List[Sample]): Double = {
-    trainingSet.map{ s =>
-      ???
+    val v1 = trainingSet.map{s =>
+      val v2 = thet.t * s.x - s.y
+
+      ""
     }
+
     ???
   }
 
