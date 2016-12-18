@@ -2,19 +2,22 @@ package machinelearning
 
 import org.scalatest.FunSuite
 import breeze.linalg._
-import breeze.linalg.operators._
 
 class BreezeSuite extends FunSuite {
 
-  test("create and show matrixes") {
-    val x = DenseVector.rand[Double](5)
-    println(x)
+  test("performance inverse matrix") {
+    List(5, 5, 10, 100, 200, 500, 1000, 2000, 5000).foreach{n =>
+      val y = DenseMatrix.rand[Double](n, n)
 
-    val y = DenseMatrix.rand[Double](5, 5)
-    println(y)
+      val t1  = System.currentTimeMillis()
+      inv(y)
+      val t2  = System.currentTimeMillis()
 
-    val z =  inv(y)
-    println(z)
+      println("inv %5d x %5d  %10d milis" format(n, n, (t2 - t1)))
+
+
+    }
+
 
   }
 
