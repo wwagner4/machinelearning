@@ -4,6 +4,8 @@ Resources concerning the coursera course [machine learning](https://www.coursera
 ## Breeze
 I a scala library for mathematic operations needed for machine learning.
 
+Github: [](https://github.com/scalanlp/breeze)
+
 ### Installation
 Using the version 0.12 did not work using sbt and the provided binaries. Problems occured (resource not found) using the
 native part. Downloading the source of the release and compiling it locally fixed the problem. 
