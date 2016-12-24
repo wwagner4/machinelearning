@@ -39,7 +39,6 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     Sample(Vector(1.0, 2.6, 0.6, 0.7), 3.0),
     Sample(Vector(1.0, 4.7, 0.8, 5.8), 6.1))
 
-
   /**
     * A function with two input vectors an one output value
     *
@@ -70,35 +69,56 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     sum(s) / (2 * m)
   }
 
-  test("Cost function training set 01") {
-    val thet = List(
+
+  {
+    val thet01 = List(
       Vector(0.0, 0.0),
       Vector(1.0, 0.0),
       Vector(0.0, 1.0),
       Vector(1.0, 1.0),
       Vector(1.93, 0.82))
 
-    println("-- COST FUNCTION -----------------------------")
+    val shouldCosts = List(
+      6.57,
+      3.75,
+      1.46,
+      0.32,
+      0.07)
+
     val cf = costFunc(linearFunc)(trainingSet01) _
-    thet.foreach { t =>
-      val cost = cf(t)
-      println(f"${format(t)}%30s -> $cost%10.2f")
+    thet01.zip(shouldCosts).foreach { case (t, shouldCost) =>
+      test(s"Cost 01 ${format(t)}") {
+        cf(t) should be(shouldCost +- 0.01)
+      }
     }
   }
 
-  test("Cost function training set 02") {
-    val thet = List(
+
+  {
+    val thet02 = List(
       Vector(0.0, 0.0, 2.9, 4.1),
       Vector(1.0, 0.0, 4.4, 5.3),
       Vector(0.0, 1.0, 1.1, 3.3),
       Vector(1.0, 1.0, 1.0, 1.0),
       Vector(2.1057738032395816, 0.8435673329439073, -0.27329323871209565, -0.033870769165503745))
 
-    println("-- COST FUNCTION -----------------------------")
+    val shouldCosts = List(
+      132.37,
+      316.01,
+      60.81,
+      20.67,
+      0.29,
+      132.37,
+      316.01,
+      60.81,
+      20.67,
+      0.29)
+
     val cf = costFunc(linearFunc)(trainingSet02) _
-    thet.foreach { t =>
-      val cost = cf(t)
-      println(f"${format(t)}%40s -> $cost%10.2f")
+    thet02.zip(shouldCosts).foreach { case (t, shouldCost) =>
+      test(s"Cost 02 ${format(t)}") {
+        cf(t) should be(shouldCost +- 0.01)
+      }
     }
   }
 
@@ -113,17 +133,6 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       t - alpha * sum(inner) / m
     }
     Vector(array)
-  }
-
-  test("Gradient descent 01") {
-    println("-- GRADIENT DESCENT 01 -----------------------------")
-    val gd = gradientDescent(0.1)(linearFunc)(trainingSet01) _
-    val initialThet: Vector[Double] = Vector(0.0, 0.0)
-    val steps = Stream.iterate(initialThet)(thet => gd(thet))
-    steps.take(100)
-      .zipWithIndex
-      .filter { case (_, i) => i % 10 == 0 }
-      .foreach { case (thet, i) => println(f"$i%4d : ${format(thet)}") }
   }
 
   {
@@ -145,21 +154,10 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       .zipWithIndex
       .filter { case (_, i) => i % 10 == 0 }
       .foreach { case (thet, i) =>
-        test(s"Gradient Descent 01 assert $i ${format(thet)}") {
+        test(s"Gradient Descent 01 assert step $i") {
           eq(thet, expectedValues(i))
         }
       }
-  }
-
-  test("Gradient descent 02 output") {
-    println("-- GRADIENT DESCENT 02 -----------------------------")
-    val gd = gradientDescent(0.05)(linearFunc)(trainingSet02) _
-    val initialThet: Vector[Double] = Vector(0.0, 0.0, 0.0, 0.0)
-    val steps = Stream.iterate(initialThet)(thet => gd(thet))
-    steps.take(500)
-      .zipWithIndex
-      .filter { case (_, i) => i % 50 == 0 }
-      .foreach { case (thet, i) => println(f"$i%4d : ${format(thet)}") }
   }
 
   {
@@ -182,7 +180,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       .zipWithIndex
       .filter { case (_, i) => i % 50 == 0 }
       .foreach { case (thet, i) =>
-        test(s"Gradient Descent 02 assert $i ${format(thet)}") {
+        test(s"Gradient Descent 02 assert step $i") {
           eq(thet, expectedValues(i))
         }
       }
