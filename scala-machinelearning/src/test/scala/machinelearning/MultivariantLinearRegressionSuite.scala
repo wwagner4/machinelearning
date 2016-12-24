@@ -15,31 +15,6 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   case class Sample(x: Vector[Double], y: Double) {}
 
   /**
-    * Same values as in the LinearRegressionSuite
-    */
-  val trainingSet01 = List(
-    Sample(Vector(1.0, 0.0), 2.1),
-    Sample(Vector(1.0, 0.5), 2.2),
-    Sample(Vector(1.0, 1.0), 3.2),
-    Sample(Vector(1.0, 2.1), 3.0),
-    Sample(Vector(1.0, 4.8), 6.1))
-
-  /**
-    * Other random testfeatures
-    */
-  val trainingSet02 = List(
-    Sample(Vector(1.0, 0.0, 0.3, 1.1), 2.1),
-    Sample(Vector(1.0, 0.5, 2.3, 0.7), 2.2),
-    Sample(Vector(1.0, 1.0, 0.3, 1.2), 3.2),
-    Sample(Vector(1.0, 2.1, 4.3, 0.3), 3.0),
-    Sample(Vector(1.0, 4.8, 5.2, 2.4), 6.1),
-    Sample(Vector(1.0, 2.0, 6.3, 0.7), 2.1),
-    Sample(Vector(1.0, 3.5, 7.4, 2.5), 2.2),
-    Sample(Vector(1.0, 4.0, 3.5, 3.6), 3.2),
-    Sample(Vector(1.0, 2.6, 0.6, 0.7), 3.0),
-    Sample(Vector(1.0, 4.7, 0.8, 5.8), 6.1))
-
-  /**
     * A function with two input vectors an one output value
     *
     * thet => x => y
@@ -69,59 +44,6 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     sum(s) / (2 * m)
   }
 
-
-  {
-    val thet01 = List(
-      Vector(0.0, 0.0),
-      Vector(1.0, 0.0),
-      Vector(0.0, 1.0),
-      Vector(1.0, 1.0),
-      Vector(1.93, 0.82))
-
-    val shouldCosts = List(
-      6.57,
-      3.75,
-      1.46,
-      0.32,
-      0.07)
-
-    val cf = costFunc(linearFunc)(trainingSet01) _
-    thet01.zip(shouldCosts).foreach { case (t, shouldCost) =>
-      test(s"Cost 01 ${format(t)}") {
-        cf(t) should be(shouldCost +- 0.01)
-      }
-    }
-  }
-
-
-  {
-    val thet02 = List(
-      Vector(0.0, 0.0, 2.9, 4.1),
-      Vector(1.0, 0.0, 4.4, 5.3),
-      Vector(0.0, 1.0, 1.1, 3.3),
-      Vector(1.0, 1.0, 1.0, 1.0),
-      Vector(2.1057738032395816, 0.8435673329439073, -0.27329323871209565, -0.033870769165503745))
-
-    val shouldCosts = List(
-      132.37,
-      316.01,
-      60.81,
-      20.67,
-      0.29,
-      132.37,
-      316.01,
-      60.81,
-      20.67,
-      0.29)
-
-    val cf = costFunc(linearFunc)(trainingSet02) _
-    thet02.zip(shouldCosts).foreach { case (t, shouldCost) =>
-      test(s"Cost 02 ${format(t)}") {
-        cf(t) should be(shouldCost +- 0.01)
-      }
-    }
-  }
-
   def gradientDescent(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
                      (thet: Vector[Double]): Vector[Double] = {
     val m = trainingSet.size.toDouble
@@ -133,6 +55,58 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       t - alpha * sum(inner) / m
     }
     Vector(array)
+  }
+
+  val trainingSet01 = List(
+    Sample(Vector(1.0, 0.0), 2.1),
+    Sample(Vector(1.0, 0.5), 2.2),
+    Sample(Vector(1.0, 1.0), 3.2),
+    Sample(Vector(1.0, 2.1), 3.0),
+    Sample(Vector(1.0, 4.8), 6.1))
+
+  val trainingSet02 = List(
+    Sample(Vector(1.0, 0.0, 0.3, 1.1), 2.1),
+    Sample(Vector(1.0, 0.5, 2.3, 0.7), 2.2),
+    Sample(Vector(1.0, 1.0, 0.3, 1.2), 3.2),
+    Sample(Vector(1.0, 2.1, 4.3, 0.3), 3.0),
+    Sample(Vector(1.0, 4.8, 5.2, 2.4), 6.1),
+    Sample(Vector(1.0, 2.0, 6.3, 0.7), 2.1),
+    Sample(Vector(1.0, 3.5, 7.4, 2.5), 2.2),
+    Sample(Vector(1.0, 4.0, 3.5, 3.6), 3.2),
+    Sample(Vector(1.0, 2.6, 0.6, 0.7), 3.0),
+    Sample(Vector(1.0, 4.7, 0.8, 5.8), 6.1))
+
+  {
+    val testData = List(
+      (Vector(0.0, 0.0), 6.57),
+      (Vector(1.0, 0.0), 3.75),
+      (Vector(0.0, 1.0), 1.46),
+      (Vector(1.0, 1.0), 0.32),
+      (Vector(1.93, 0.82), 0.07))
+
+    val cf = costFunc(linearFunc)(trainingSet01) _
+    testData.foreach { case (t, shouldCost) =>
+      test(s"Cost 01 ${format(t)}") {
+        cf(t) should be(shouldCost +- 0.01)
+      }
+    }
+  }
+
+
+  {
+    val testData = List(
+      (Vector(0.0, 0.0, 2.9, 4.1), 132.37),
+      (Vector(1.0, 0.0, 4.4, 5.3), 316.01),
+      (Vector(0.0, 1.0, 1.1, 3.3), 60.81),
+      (Vector(1.0, 1.0, 1.0, 1.0), 20.67),
+      (Vector(2.1057, 0.8435, -0.2732, -0.0338), 0.29))
+
+    val cf = costFunc(linearFunc)(trainingSet02) _
+    testData.foreach { case (t, shouldCost) =>
+      test(s"Cost 02 ${format(t)}") {
+        cf(t) should be(shouldCost +- 0.01)
+      }
+    }
   }
 
   {
@@ -186,6 +160,9 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       }
   }
 
+  /**
+    * Compares two double vectors
+    */
   private def eq(is: Vector[Double], should: Vector[Double]): Unit = {
     is.size should be(should.size)
     0 until is.size foreach { i =>
@@ -194,6 +171,9 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   }
 
+  /**
+    * @return Formated double vector
+    */
   private def format(v: Vector[Double]): String = {
     val values = v.toArray.map(v => " %.2f" format v).mkString(", ")
     f"Vector[$values]"
