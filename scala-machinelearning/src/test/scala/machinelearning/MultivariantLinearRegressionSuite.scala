@@ -1,6 +1,7 @@
 package machinelearning
 
-import org.scalatest.FunSuite
+import org.scalatest._
+import Matchers._
 import breeze.linalg._
 
 /**
@@ -102,7 +103,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   }
 
   def gradientDescent(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
-             (thet: Vector[Double]): Vector[Double] = {
+                     (thet: Vector[Double]): Vector[Double] = {
     val m = trainingSet.size.toDouble
     val hf = hypo(thet)(_)
     val array = thet.toArray.zipWithIndex.map { case (t, i) =>
@@ -125,7 +126,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       .foreach { case (thet, i) => println(f"$i%4d : ${format(thet)}") }
   }
 
-  test("Gradient descent 02") {
+  test("Gradient descent 02 output") {
     println("-- GRADIENT DESCENT -----------------------------")
     val gd = gradientDescent(0.05)(linearFunc)(trainingSet02) _
     val initialThet: Vector[Double] = DenseVector(0.0, 0.0, 0.0, 0.0)
@@ -134,6 +135,40 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       .zipWithIndex
       .filter { case (_, i) => i % 50 == 0 }
       .foreach { case (thet, i) => println(f"$i%4d : ${format(thet)}") }
+  }
+
+  {
+    val expectedValues = Map(
+      (0 -> Vector(0.00, 0.00, 0.00, 0.00)),
+      (50 -> Vector(1.00, 0.77, -0.11, 0.25)),
+      (100 -> Vector(1.49, 0.83, -0.19, 0.10)),
+      (150 -> Vector(1.76, 0.85, -0.23, 0.03)),
+      (200 -> Vector(1.91, 0.85, -0.25, -0.00)),
+      (250 -> Vector(2.00, 0.85, -0.26, -0.02)),
+      (300 -> Vector(2.05, 0.85, -0.27, -0.02)),
+      (350 -> Vector(2.07, 0.85, -0.27, -0.03)),
+      (400 -> Vector(2.09, 0.84, -0.27, -0.03)),
+      (450 -> Vector(2.10, 0.84, -0.27, -0.03)))
+
+    val gd = gradientDescent(0.05)(linearFunc)(trainingSet02) _
+    val initialThet: Vector[Double] = DenseVector(0.0, 0.0, 0.0, 0.0)
+    val steps = Stream.iterate(initialThet)(thet => gd(thet))
+    steps.take(500)
+      .zipWithIndex
+      .filter { case (_, i) => i % 50 == 0 }
+      .foreach { case (thet, i) =>
+        test(s"Gradient Descent $i ${format(thet)}") {
+          eq(thet, expectedValues(i))
+        }
+      }
+  }
+
+  private def eq(is: Vector[Double], should: Vector[Double]): Unit = {
+    is.size should be (should.size)
+    0 until is.size foreach {i =>
+      is(i) should be (should(i) +- 0.05)
+    }
+
   }
 
   private def format(v: Vector[Double]): String = {
