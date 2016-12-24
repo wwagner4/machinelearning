@@ -4,58 +4,9 @@ import org.scalatest._
 import Matchers._
 import breeze.linalg._
 
-/**
-  * Experiments around multivariant linear regression
-  */
 class MultivariantLinearRegressionSuite extends FunSuite {
 
-  /**
-    * Container for one row of the training set
-    */
-  case class Sample(x: Vector[Double], y: Double) {}
-
-  /**
-    * A function with two input vectors an one output value
-    *
-    * thet => x => y
-    *
-    * thet: parameters (to be optimized)
-    * x   : sample values (featuers)
-    * y   : result of the hypothesis (to be minimized)
-    */
-  type HypType = Vector[Double] => Vector[Double] => Double
-
-  /**
-    * Linear function of type 'HypType'
-    */
-  def linearFunc(thet: Vector[Double])(x: Vector[Double]): Double = {
-    require(thet.size > 0)
-    require(x.size > 0)
-    require(thet.size == x.size)
-
-    thet.t * x
-  }
-
-  def costFunc(hyp: HypType)(trainingSet: List[Sample])(thet: Vector[Double]): Double = {
-    val m = trainingSet.size
-    val s = trainingSet.map { s =>
-      math.pow(thet.t * s.x - s.y, 2)
-    }
-    sum(s) / (2 * m)
-  }
-
-  def gradientDescent(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
-                     (thet: Vector[Double]): Vector[Double] = {
-    val m = trainingSet.size.toDouble
-    val hf = hypo(thet)(_)
-    val array = thet.toArray.zipWithIndex.map { case (t, i) =>
-      val inner = trainingSet.map { s =>
-        (hf(s.x) - s.y) * s.x(i)
-      }
-      t - alpha * sum(inner) / m
-    }
-    Vector(array)
-  }
+  import GradientDescent._
 
   val trainingSet01 = List(
     Sample(Vector(1.0, 0.0), 2.1),
