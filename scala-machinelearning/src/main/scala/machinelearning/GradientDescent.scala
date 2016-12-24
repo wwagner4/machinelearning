@@ -23,17 +23,6 @@ object GradientDescent {
     */
   type HypType = Vector[Double] => Vector[Double] => Double
 
-  /**
-    * Linear function of type 'HypType'
-    */
-  def linearFunc(thet: Vector[Double])(x: Vector[Double]): Double = {
-    require(thet.size > 0)
-    require(x.size > 0)
-    require(thet.size == x.size)
-
-    thet.t * x
-  }
-
   def costFunc(hyp: HypType)(trainingSet: List[Sample])(thet: Vector[Double]): Double = {
     val m = trainingSet.size
     val s = trainingSet.map { s =>
@@ -61,4 +50,24 @@ object GradientDescent {
     }
     Vector(array)
   }
+}
+
+object HypothesisFunction {
+
+  /**
+    * Linear function of type 'HypType'
+    */
+  def linearFunc: GradientDescent.HypType = {
+    case (thet: Vector[Double]) => (x: Vector[Double]) => {
+      require(thet.size > 0)
+      require(x.size > 0)
+      require(thet.size == x.size)
+
+      thet.t * x
+    }
+  }
+
+
+
+
 }

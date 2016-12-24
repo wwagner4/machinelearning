@@ -7,6 +7,7 @@ import breeze.linalg._
 class MultivariantLinearRegressionSuite extends FunSuite {
 
   import GradientDescent._
+  import HypothesisFunction._
 
   val trainingSet01 = List(
     Sample(Vector(1.0, 0.0), 2.1),
