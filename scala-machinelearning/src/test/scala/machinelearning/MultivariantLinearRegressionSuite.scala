@@ -18,26 +18,26 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     * Same values as in the LinearRegressionSuite
     */
   val trainingSet01 = List(
-    Sample(DenseVector(1.0, 0.0), 2.1),
-    Sample(DenseVector(1.0, 0.5), 2.2),
-    Sample(DenseVector(1.0, 1.0), 3.2),
-    Sample(DenseVector(1.0, 2.1), 3.0),
-    Sample(DenseVector(1.0, 4.8), 6.1))
+    Sample(Vector(1.0, 0.0), 2.1),
+    Sample(Vector(1.0, 0.5), 2.2),
+    Sample(Vector(1.0, 1.0), 3.2),
+    Sample(Vector(1.0, 2.1), 3.0),
+    Sample(Vector(1.0, 4.8), 6.1))
 
   /**
     * Other random testfeatures
     */
   val trainingSet02 = List(
-    Sample(DenseVector(1.0, 0.0, 0.3, 1.1), 2.1),
-    Sample(DenseVector(1.0, 0.5, 2.3, 0.7), 2.2),
-    Sample(DenseVector(1.0, 1.0, 0.3, 1.2), 3.2),
-    Sample(DenseVector(1.0, 2.1, 4.3, 0.3), 3.0),
-    Sample(DenseVector(1.0, 4.8, 5.2, 2.4), 6.1),
-    Sample(DenseVector(1.0, 2.0, 6.3, 0.7), 2.1),
-    Sample(DenseVector(1.0, 3.5, 7.4, 2.5), 2.2),
-    Sample(DenseVector(1.0, 4.0, 3.5, 3.6), 3.2),
-    Sample(DenseVector(1.0, 2.6, 0.6, 0.7), 3.0),
-    Sample(DenseVector(1.0, 4.7, 0.8, 5.8), 6.1))
+    Sample(Vector(1.0, 0.0, 0.3, 1.1), 2.1),
+    Sample(Vector(1.0, 0.5, 2.3, 0.7), 2.2),
+    Sample(Vector(1.0, 1.0, 0.3, 1.2), 3.2),
+    Sample(Vector(1.0, 2.1, 4.3, 0.3), 3.0),
+    Sample(Vector(1.0, 4.8, 5.2, 2.4), 6.1),
+    Sample(Vector(1.0, 2.0, 6.3, 0.7), 2.1),
+    Sample(Vector(1.0, 3.5, 7.4, 2.5), 2.2),
+    Sample(Vector(1.0, 4.0, 3.5, 3.6), 3.2),
+    Sample(Vector(1.0, 2.6, 0.6, 0.7), 3.0),
+    Sample(Vector(1.0, 4.7, 0.8, 5.8), 6.1))
 
 
   /**
@@ -72,11 +72,11 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   test("Cost function training set 01") {
     val thet = List(
-      DenseVector(0.0, 0.0),
-      DenseVector(1.0, 0.0),
-      DenseVector(0.0, 1.0),
-      DenseVector(1.0, 1.0),
-      DenseVector(1.93, 0.82))
+      Vector(0.0, 0.0),
+      Vector(1.0, 0.0),
+      Vector(0.0, 1.0),
+      Vector(1.0, 1.0),
+      Vector(1.93, 0.82))
 
     println("-- COST FUNCTION -----------------------------")
     val cf = costFunc(linearFunc)(trainingSet01) _
@@ -88,11 +88,11 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   test("Cost function training set 02") {
     val thet = List(
-      DenseVector(0.0, 0.0, 2.9, 4.1),
-      DenseVector(1.0, 0.0, 4.4, 5.3),
-      DenseVector(0.0, 1.0, 1.1, 3.3),
-      DenseVector(1.0, 1.0, 1.0, 1.0),
-      DenseVector(2.1057738032395816, 0.8435673329439073, -0.27329323871209565, -0.033870769165503745))
+      Vector(0.0, 0.0, 2.9, 4.1),
+      Vector(1.0, 0.0, 4.4, 5.3),
+      Vector(0.0, 1.0, 1.1, 3.3),
+      Vector(1.0, 1.0, 1.0, 1.0),
+      Vector(2.1057738032395816, 0.8435673329439073, -0.27329323871209565, -0.033870769165503745))
 
     println("-- COST FUNCTION -----------------------------")
     val cf = costFunc(linearFunc)(trainingSet02) _
@@ -112,13 +112,13 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       }
       t - alpha * sum(inner) / m
     }
-    DenseVector(array)
+    Vector(array)
   }
 
   test("Gradient descent 01") {
     println("-- GRADIENT DESCENT 01 -----------------------------")
     val gd = gradientDescent(0.1)(linearFunc)(trainingSet01) _
-    val initialThet: Vector[Double] = DenseVector(0.0, 0.0)
+    val initialThet: Vector[Double] = Vector(0.0, 0.0)
     val steps = Stream.iterate(initialThet)(thet => gd(thet))
     steps.take(100)
       .zipWithIndex
@@ -128,18 +128,18 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   {
     val expectedValues = Map(
-      (0 -> Vector(0.00, 0.00)),
-      (10 -> Vector(0.99, 1.12)),
-      (20 -> Vector(1.35, 1.01)),
-      (30 -> Vector(1.57, 0.94)),
-      (40 -> Vector(1.71, 0.89)),
-      (50 -> Vector(1.80, 0.87)),
-      (60 -> Vector(1.85, 0.85)),
-      (70 -> Vector(1.88, 0.84)),
-      (80 -> Vector(1.91, 0.83)),
-      (90 -> Vector(1.92, 0.83)))
+      0 -> Vector(0.00, 0.00),
+      10 -> Vector(0.99, 1.12),
+      20 -> Vector(1.35, 1.01),
+      30 -> Vector(1.57, 0.94),
+      40 -> Vector(1.71, 0.89),
+      50 -> Vector(1.80, 0.87),
+      60 -> Vector(1.85, 0.85),
+      70 -> Vector(1.88, 0.84),
+      80 -> Vector(1.91, 0.83),
+      90 -> Vector(1.92, 0.83))
     val gd = gradientDescent(0.1)(linearFunc)(trainingSet01) _
-    val initialThet: Vector[Double] = DenseVector(0.0, 0.0)
+    val initialThet: Vector[Double] = Vector(0.0, 0.0)
     val steps = Stream.iterate(initialThet)(thet => gd(thet))
     steps.take(100)
       .zipWithIndex
@@ -154,7 +154,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
   test("Gradient descent 02 output") {
     println("-- GRADIENT DESCENT 02 -----------------------------")
     val gd = gradientDescent(0.05)(linearFunc)(trainingSet02) _
-    val initialThet: Vector[Double] = DenseVector(0.0, 0.0, 0.0, 0.0)
+    val initialThet: Vector[Double] = Vector(0.0, 0.0, 0.0, 0.0)
     val steps = Stream.iterate(initialThet)(thet => gd(thet))
     steps.take(500)
       .zipWithIndex
@@ -164,19 +164,19 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   {
     val expectedValues = Map(
-      (0 -> Vector(0.00, 0.00, 0.00, 0.00)),
-      (50 -> Vector(1.00, 0.77, -0.11, 0.25)),
-      (100 -> Vector(1.49, 0.83, -0.19, 0.10)),
-      (150 -> Vector(1.76, 0.85, -0.23, 0.03)),
-      (200 -> Vector(1.91, 0.85, -0.25, -0.00)),
-      (250 -> Vector(2.00, 0.85, -0.26, -0.02)),
-      (300 -> Vector(2.05, 0.85, -0.27, -0.02)),
-      (350 -> Vector(2.07, 0.85, -0.27, -0.03)),
-      (400 -> Vector(2.09, 0.84, -0.27, -0.03)),
-      (450 -> Vector(2.10, 0.84, -0.27, -0.03)))
+      0 -> Vector(0.00, 0.00, 0.00, 0.00),
+      50 -> Vector(1.00, 0.77, -0.11, 0.25),
+      100 -> Vector(1.49, 0.83, -0.19, 0.10),
+      150 -> Vector(1.76, 0.85, -0.23, 0.03),
+      200 -> Vector(1.91, 0.85, -0.25, -0.00),
+      250 -> Vector(2.00, 0.85, -0.26, -0.02),
+      300 -> Vector(2.05, 0.85, -0.27, -0.02),
+      350 -> Vector(2.07, 0.85, -0.27, -0.03),
+      400 -> Vector(2.09, 0.84, -0.27, -0.03),
+      450 -> Vector(2.10, 0.84, -0.27, -0.03))
 
     val gd = gradientDescent(0.05)(linearFunc)(trainingSet02) _
-    val initialThet: Vector[Double] = DenseVector(0.0, 0.0, 0.0, 0.0)
+    val initialThet: Vector[Double] = Vector(0.0, 0.0, 0.0, 0.0)
     val steps = Stream.iterate(initialThet)(thet => gd(thet))
     steps.take(500)
       .zipWithIndex
