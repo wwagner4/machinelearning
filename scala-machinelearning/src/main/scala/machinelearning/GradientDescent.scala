@@ -1,11 +1,11 @@
 package machinelearning
 
-import breeze.linalg.{Vector, sum}
+import breeze.linalg.{DenseMatrix, DenseVector, sum}
 
 /**
   * Container for one row of the training set
   */
-case class Sample(x: Vector[Double], y: Double) {}
+case class TrainingSet(X: DenseMatrix[Double], y: DenseMatrix[Double])
 
 /**
   * Implementation of the Gradient-Descent algorithm
@@ -15,41 +15,37 @@ object GradientDescent {
   /**
     * A function with two input vectors an one output value
     *
-    * thet => x => y
+    * thet => X => y
     *
-    * thet: parameters (to be optimized)
-    * x   : sample values (featuers)
-    * y   : result of the hypothesis (to be minimized)
+    * thet: column vector of parameters (to be optimized)
+    * X   : sample values (featuers). first column must be 1.0
+    * y   : result (column vector) of the hypothesis (to be minimized)
     */
-  type HypType = Vector[Double] => Vector[Double] => Double
+  type HypType = DenseMatrix[Double] => DenseMatrix[Double] => DenseMatrix[Double]
 
-  def costFunc(hyp: HypType)(trainingSet: List[Sample])(thet: Vector[Double]): Double = {
-    val m = trainingSet.size
-    val s = trainingSet.map { s =>
-      math.pow(thet.t * s.x - s.y, 2)
-    }
-    sum(s) / (2 * m)
+  def costFunc(hyp: HypType)(ts: TrainingSet)(thet: DenseMatrix[Double]): Double = {
+    val h = hyp(thet)(_)
+    val m = ts.y.rows
+    sum((h(ts.X) - ts.y) :^ 2.0) / (2 * m)
   }
 
   /**
     * @param alpha step width
     * @param hypo hypothesis function
-    * @param trainingSet training set
+    * @param ts training set
     * @param thet set of parameters
     * @return the next set of parameters
     */
-  def gradientDescent(alpha: Double)(hypo: HypType)(trainingSet: List[Sample])
-                     (thet: Vector[Double]): Vector[Double] = {
-    val m = trainingSet.size.toDouble
+  def gradientDescent(alpha: Double)(hypo: HypType)(ts: TrainingSet)
+                     (thet: DenseMatrix[Double]): DenseMatrix[Double] = {
+    val m = ts.y.rows.toDouble
     val hf = hypo(thet)(_)
-    val array = thet.toArray.zipWithIndex.map { case (t, i) =>
-      val inner = trainingSet.map { s =>
-        (hf(s.x) - s.y) * s.x(i)
-      }
-      t - alpha * sum(inner) / m
-    }
-    Vector(array)
+
+    val v1 = hf(ts.X) - ts.y
+
+    thet - alpha * ((1/m) *  v1.t * ts.X).t
   }
+
 }
 
 object HypothesisFunction {
@@ -58,12 +54,13 @@ object HypothesisFunction {
     * Linear function of type 'HypType'
     */
   def linearFunc: GradientDescent.HypType = {
-    case (thet: Vector[Double]) => (x: Vector[Double]) => {
-      require(thet.size > 0)
-      require(x.size > 0)
-      require(thet.size == x.size)
+    case (thet: DenseMatrix[Double]) => (X: DenseMatrix[Double]) => {
+      require(thet.cols > 0)
+      require(thet.rows == 1)
+      require(X.rows > 0)
+      require(thet.cols == X.rows)
 
-      thet.t * x
+      thet * X
     }
   }
 
