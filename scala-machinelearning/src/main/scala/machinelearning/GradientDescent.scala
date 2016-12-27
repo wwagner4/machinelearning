@@ -1,6 +1,6 @@
 package machinelearning
 
-import breeze.linalg.{DenseMatrix, DenseVector, sum}
+import breeze.linalg.{DenseMatrix, sum}
 
 /**
   * Container for one row of the training set
@@ -41,7 +41,10 @@ object GradientDescent {
     val m = ts.y.rows.toDouble
     val hf = hypo(thet)(_)
 
-    val v1 = hf(ts.X) - ts.y
+    val v0 = hf(ts.X)
+    println(s"v0 ${v0.rows} x ${v0.cols}\n$v0")
+    println(s"ts.y ${ts.y.rows} x ${ts.y.cols}\n${ts.y}")
+    val v1 = v0 - ts.y
 
     thet - alpha * ((1/m) *  v1.t * ts.X).t
   }
@@ -55,12 +58,13 @@ object HypothesisFunction {
     */
   def linearFunc: GradientDescent.HypType = {
     case (thet: DenseMatrix[Double]) => (X: DenseMatrix[Double]) => {
-      require(thet.cols > 0)
-      require(thet.rows == 1)
+      require(thet.cols == 1)
+      require(thet.rows > 0)
       require(X.rows > 0)
-      require(thet.cols == X.rows)
+      require(X.cols == thet.rows)
 
-      thet * X
+      X * thet
+
     }
   }
 

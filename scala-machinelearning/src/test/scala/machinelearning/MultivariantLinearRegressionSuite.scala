@@ -17,12 +17,12 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       (1.0, 2.1),
       (1.0, 4.8)
     ),
-    y = DenseMatrix((
+    y = DenseMatrix(
       2.1,
       2.2,
       3.2,
       3.0,
-      6.1))
+      6.1)
   )
 
   val ts02 = TrainingSet(
@@ -37,7 +37,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       (1.0, 4.0, 3.5, 3.6),
       (1.0, 2.6, 0.6, 0.7),
       (1.0, 4.7, 0.8, 5.8)),
-    y = DenseMatrix((
+    y = DenseMatrix(
       2.1,
       2.2,
       3.2,
@@ -48,7 +48,6 @@ class MultivariantLinearRegressionSuite extends FunSuite {
       3.2,
       3.0,
       6.1)
-    )
   )
 
   {
