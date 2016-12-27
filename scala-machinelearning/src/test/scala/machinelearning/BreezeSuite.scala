@@ -74,4 +74,41 @@ class BreezeSuite extends FunSuite {
     println("x2: %s" format x2)
   }
 
+  test("matrix matrix operations") {
+    println("--- MATRIX MATRIX OPERATIONS -------------------------------------")
+    // M 3 x 2
+    val M1 = Matrix((1.0, 2.0), (2.0, 3.0), (3.0, 4.0))
+    println("M1:\n" + M1)
+    println(s"M1 ${M1.rows} x ${M1.cols}")
+
+    // M 2 x 3
+    val M2 = DenseMatrix((1.0, 2.0, 4.0), (2.0, 3.0, 5.0))
+    println("M2:\n" + M2)
+    println(s"M2 ${M2.rows} x ${M2.cols}")
+
+    // M 2 x 1
+    val vm = DenseMatrix(1.0, 2.0)
+    println("vm:\n" + vm)
+    println(s"vm ${vm.rows} x ${vm.cols}")
+
+    // v 2 x 1
+    val vv = DenseVector(1.0, 2.0)
+    println("vv:\n" + vv)
+    println(s"vv ${vv.length} x 1")
+
+    // 3 x 2   *   2 x 1
+    val a = M1 * vm
+
+    // 3 x 2   *   2 x 1
+    val b = M1 * vv
+
+    val c = M2.t * vm
+
+
+    println("a:\n" + a)
+    println("b:\n" + b)
+    println("c:\n" + c)
+
+  }
+
 }
