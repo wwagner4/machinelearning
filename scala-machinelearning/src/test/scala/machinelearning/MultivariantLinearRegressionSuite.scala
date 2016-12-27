@@ -141,7 +141,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     is.rows should be(should.rows)
     is.cols should be(should.cols)
     for (i <- 0 until is.rows; j <- 0 until is.cols) {
-      is(i, j) should be(should(i, j) +- 0.05)
+      is(i, j) should be(should(i, j) +- 0.01)
     }
 
   }
