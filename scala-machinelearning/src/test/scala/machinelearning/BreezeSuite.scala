@@ -13,7 +13,7 @@ class BreezeSuite extends FunSuite {
       inv(y)
       val t2 = System.currentTimeMillis()
 
-      println("inv %5d x %5d  %10d milis" format(n, n, (t2 - t1)))
+      println("inv %5d x %5d  %10d milis" format(n, n, t2 - t1))
     }
   }
 
@@ -104,10 +104,13 @@ class BreezeSuite extends FunSuite {
 
     val c = M2.t * vm
 
+    val d = M2.t * vv
+
 
     println("a:\n" + a)
     println("b:\n" + b)
     println("c:\n" + c)
+    println("d:\n" + d)
 
   }
 
