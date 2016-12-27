@@ -85,16 +85,16 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   {
     val expectedValues = Map(
-      0 -> DenseMatrix(0.00, 0.00).t,
-      10 -> DenseMatrix(0.99, 1.12).t,
-      20 -> DenseMatrix(1.35, 1.01).t,
-      30 -> DenseMatrix(1.57, 0.94).t,
-      40 -> DenseMatrix(1.71, 0.89).t,
-      50 -> DenseMatrix(1.80, 0.87).t,
-      60 -> DenseMatrix(1.85, 0.85).t,
-      70 -> DenseMatrix(1.88, 0.84).t,
-      80 -> DenseMatrix(1.91, 0.83).t,
-      90 -> DenseMatrix(1.92, 0.83).t)
+      0 -> DenseMatrix(0.00, 0.00),
+      10 -> DenseMatrix(0.99, 1.12),
+      20 -> DenseMatrix(1.35, 1.01),
+      30 -> DenseMatrix(1.57, 0.94),
+      40 -> DenseMatrix(1.71, 0.89),
+      50 -> DenseMatrix(1.80, 0.87),
+      60 -> DenseMatrix(1.85, 0.85),
+      70 -> DenseMatrix(1.88, 0.84),
+      80 -> DenseMatrix(1.91, 0.83),
+      90 -> DenseMatrix(1.92, 0.83))
     val gd = gradientDescent(0.1)(linearFunc)(ts01) _
     val initialThet = DenseMatrix(0.0, 0.0)
     val steps = Stream.iterate(initialThet)(thet => gd(thet))
@@ -110,16 +110,16 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
   {
     val expectedValues = Map(
-      0 -> DenseMatrix(0.00, 0.00, 0.00, 0.00).t,
-      50 -> DenseMatrix(1.00, 0.77, -0.11, 0.25).t,
-      100 -> DenseMatrix(1.49, 0.83, -0.19, 0.10).t,
-      150 -> DenseMatrix(1.76, 0.85, -0.23, 0.03).t,
-      200 -> DenseMatrix(1.91, 0.85, -0.25, -0.00).t,
-      250 -> DenseMatrix(2.00, 0.85, -0.26, -0.02).t,
-      300 -> DenseMatrix(2.05, 0.85, -0.27, -0.02).t,
-      350 -> DenseMatrix(2.07, 0.85, -0.27, -0.03).t,
-      400 -> DenseMatrix(2.09, 0.84, -0.27, -0.03).t,
-      450 -> DenseMatrix(2.10, 0.84, -0.27, -0.03).t)
+      0 -> DenseMatrix(0.00, 0.00, 0.00, 0.00),
+      50 -> DenseMatrix(1.00, 0.77, -0.11, 0.25),
+      100 -> DenseMatrix(1.49, 0.83, -0.19, 0.10),
+      150 -> DenseMatrix(1.76, 0.85, -0.23, 0.03),
+      200 -> DenseMatrix(1.91, 0.85, -0.25, -0.00),
+      250 -> DenseMatrix(2.00, 0.85, -0.26, -0.02),
+      300 -> DenseMatrix(2.05, 0.85, -0.27, -0.02),
+      350 -> DenseMatrix(2.07, 0.85, -0.27, -0.03),
+      400 -> DenseMatrix(2.09, 0.84, -0.27, -0.03),
+      450 -> DenseMatrix(2.10, 0.84, -0.27, -0.03))
 
     val gd = gradientDescent(0.05)(linearFunc)(ts02) _
     val initialThet = DenseMatrix(0.0, 0.0, 0.0, 0.0)
@@ -138,9 +138,10 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     * Compares two double vectors
     */
   private def eq(is: DenseMatrix[Double], should: DenseMatrix[Double]): Unit = {
-    is.size should be(should.size)
+    is.rows should be(should.rows)
+    is.cols should be(should.cols)
     for (i <- 0 until is.rows; j <- 0 until is.cols) {
-      is(i, j) should be(should(i, i) +- 0.05)
+      is(i, j) should be(should(i, j) +- 0.05)
     }
 
   }
