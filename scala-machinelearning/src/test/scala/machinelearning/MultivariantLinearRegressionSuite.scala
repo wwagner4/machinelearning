@@ -60,7 +60,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
     val cf = costFunc(linearFunc)(ts01) _
     testData.foreach { case (t, shouldCost) =>
-      test(s"Cost 01 $t") {
+      test(s"Cost 01 ${format(t)}") {
         cf(t) should be(shouldCost +- 0.01)
       }
     }
@@ -77,7 +77,7 @@ class MultivariantLinearRegressionSuite extends FunSuite {
 
     val cf = costFunc(linearFunc)(ts02) _
     testData.foreach { case (t, shouldCost) =>
-      test(s"Cost 02 $t") {
+      test(s"Cost 02 ${format(t)}") {
         cf(t) should be(shouldCost +- 0.01)
       }
     }
@@ -143,7 +143,13 @@ class MultivariantLinearRegressionSuite extends FunSuite {
     for (i <- 0 until is.rows; j <- 0 until is.cols) {
       is(i, j) should be(should(i, j) +- 0.01)
     }
+  }
 
+  private def format(m: Matrix[Double]): String = {
+    val re = for (i <- 0 until m.rows; j <- 0 until m.cols) yield {
+      "%.2f" format m(i, j)
+    }
+    re.mkString("[", ",", "]")
   }
 
 }
