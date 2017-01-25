@@ -1,0 +1,13 @@
+Q: What means bios and variance
+A: High bios means underfitting. High variance means overfitting
+
+Q: Exist situations with high variance and high bios at the same time?
+A: ???
+
+Q: When normalizing the input values X for supervised learning, do we
+   also have to normalize the corresponding output values y?
+A: ??? 
+
+Q: What is the difference between the cross validation- and the test set
+   for validationg the performance of your algorithm?
+A: ??? 
