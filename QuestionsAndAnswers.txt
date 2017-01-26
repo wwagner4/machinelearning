@@ -2,7 +2,7 @@ Q: What means bios and variance
 A: High bios means underfitting. High variance means overfitting
 
 Q: Exist situations with high variance and high bios at the same time?
-A: ???
+A: No. High bias means underfitting and high variance means overfitting. There can only be one of these situations at the same time.
 
 Q: When normalizing the input values X for supervised learning, do we
    also have to normalize the corresponding output values y?
