@@ -6,7 +6,7 @@ A: No. High bias means underfitting and high variance means overfitting. There c
 
 Q: When normalizing the input values X for supervised learning, do we
    also have to normalize the corresponding output values y?
-A: ??? 
+A: No
 
 Q: What is the difference between the cross validation- and the test set
    for validationg the performance of your algorithm?
