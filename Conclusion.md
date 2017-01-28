@@ -5,12 +5,12 @@ reasonable result according to a training set.
 * Input: Vector of real values. Usually x
 * Output: Vector of real values. Usually y
 * Training set: 
-** Input values. Matrix of real values. 
-*** Rows: Input values of one training example.
-*** Columns: Features 
-** Output values Matrix of real values. 
-*** Rows: Output values of one training example. 
-*** Columns: Output dimensions
+..* Input values. Matrix of real values. 
+....* Rows: Input values of one training example.
+....* Columns: Features 
+..* Output values Matrix of real values. 
+....* Rows: Output values of one training example. 
+....* Columns: Output dimensions
 
 The nth row ouf the input matrix corresponds to the nth row of the input matrix. One row of 
 
