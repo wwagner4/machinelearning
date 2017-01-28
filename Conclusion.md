@@ -51,13 +51,13 @@ An input vector is mapped to an output vector of real values.
 
 TODO: vectorized cost function in octave
 
-m: Number of training examples
-n: Number of features (input)
-k: Number of dimensions (output)
-Theta: Current parameters of the hypothesis. Matrix of Real values
-X: Training set input values
-Y: Training set output values
-h(...): Hypothesis function taking n input values and containing n parameters. Returns k (calculated) output values.
+* Theta: Current parameters of the hypothesis. Matrix of Real values
+* X: Training set input values
+* Y: Training set output values
+* h(...): Hypothesis function taking n input values and containing n parameters. Returns k (calculated) output values.
+* m: Number of training examples
+* n: Number of features (input)
+* k: Number of dimensions (output)
 
 Partial derivaties of the cost function.
 
@@ -68,13 +68,13 @@ Categorisation problem. An input vector is mapped to one of k categories.
 
 TODO: vectorized cost function in octave
 
-m: Number of training examples
-n: Number of features (input)
-k: Number of dimensions (output)
-Theta: Current parameters of the hypothesis. Matrix of Real values
-X: Training set input values
-Y: Training set output values
-h(...): Hypothesis function taking n input values and containing n parameters. Returns k (calculated) output values.
+* Theta: Current parameters of the hypothesis. Matrix of Real values
+* X: Training set input values
+* Y: Training set output values
+* h(...): Hypothesis function taking n input values and containing n parameters. Returns k (calculated) output values.
+* m: Number of training examples
+* n: Number of features (input)
+* k: Number of dimensions (output)
 
 Partial derivaties of the cost function.
 
