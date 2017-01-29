@@ -135,6 +135,11 @@ you must reload the optimized parameters into patrixes of the original sizes.
 # TODO: Vectorized implementation of forward and backward propagation in octave.
 ```
 
+## Support vector machine
+Another algorithem for logistic regressin is the Support Vector Machine (SVM) also called Broad Margin Optimizer TODO chech if true.
+
+TODO Describe and write down the octave code for the support vector machine
+
 # Optimisations to learning algorithms
 
 ## Normalisation
@@ -150,7 +155,7 @@ x1 = (x .- m(x)) ./ v(x) #TODO Check if correct. TODO change to a vectorized ver
 * m(x): Arithmetic mean of the input values
 * v(x): Variance of the input values
 
-## Regularisatio
+## Regularisation
 If your hypothes is a very 'advanced' function (e.g. a high graded polinomial) it might fit your training set very well but perform poor
 to predict output values for other inputs. To avoid this problem an extra regulasition term can be added to the cost function in order to
 lessen that problem.
@@ -162,4 +167,41 @@ Jr(theta) = J(theta) + R # TODO Write the regularisation term in vectorized octa
 * J(...): Original cost function
 
 TODO: Check if there is an impact on the derivatives.
+
+## Dimension reduction
+Having lots of features (e.g 1000 or more) can lead to a poor performance of the learning algorithm. As in many practiacal some of these
+features. The algorithem for dimension reduction is PCA (principal component analysis).
+
+Describe PCA TODO
+
+```octave
+Jr(theta) = J(theta) + R # TODO Write the regularisation term in vectorized octave
+```
+
+# Result examination
+
+After you have optimized the parameters of the hypothesis it is necessary to examine the behaviour of that function.
+There are several indexes that give you an idea how well your optimized hypothesis can predict meaningfull output values.
+
+## Bias
+
+TODO
+
+## Variance
+
+TODO
+
+## Sustain and ??? TODO
+
+TODO
+
+## Retained variance on dimension reduction
+
+TODO
+
+# Other machine learning Algorithms
+
+## Clustering with the K-Means algorithm
+ TODO
+ 
 
