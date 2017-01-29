@@ -41,10 +41,10 @@ The cost function is a function that is small if the calculated output values ar
 output values of the training set for each training example and great if there are big 
 differences between the calculated and the expected values. 
 
-## Types supervised learning problems
+## Types of supervised learning problems
 
-There are two types of learning problems. The main difference between the different types of learning problems is
-the cost function
+There are two types of learning problems. The main difference between the different types is
+their cost function.
 
 ### Linear regression
 An input vector is mapped to an output vector of real values.
@@ -149,4 +149,17 @@ x1 = (x .- m(x)) ./ v(x) #TODO Check if correct. TODO change to a vectorized ver
 * x1: Normalized input values. Vector of reals.
 * m(x): Arithmetic mean of the input values
 * v(x): Variance of the input values
+
+## Regularisatio
+If your hypothes is a very 'advanced' function (e.g. a high graded polinomial) it might fit your training set very well but perform poor
+to predict output values for other inputs. To avoid this problem an extra regulasition term can be added to the cost function in order to
+lessen that problem.
+
+```octave
+Jr(theta) = J(theta) + R # TODO Write the regularisation term in vectorized octave
+```
+* Jr(...): Regularized cost function
+* J(...): Original cost function
+
+TODO: Check if there is an impact on the derivatives.
 
