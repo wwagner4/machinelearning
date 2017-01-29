@@ -119,4 +119,18 @@ you must reload the optimized parameters into patrixes of the original sizes.
 
 TODO: Vectorized implementation of forward and backward propagation in octave.
 
+# Optimisations to learning algorithms
+
+## Normalisation
+Linear transformations to the feature values leads to the same parameters. As the performance of the learning algorithem is better having features that
+vary in the same range it makes sense to apply linear transformations to achive that goal.
+
+```octave
+x1 = (x .- m(x)) ./ v(x) #TODO Check if correct. TODO change to a vectorized version that operates on X (Matrix of input values).
+```
+
+* x: Input values. Vector of reals
+* x1: Normalized input values. Vector of reals.
+* m(x): Arithmetic mean of the input values
+* v(x): Variance of the input values
 
