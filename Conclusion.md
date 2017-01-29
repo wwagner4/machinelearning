@@ -49,7 +49,9 @@ the cost function
 ### Linear regression
 An input vector is mapped to an output vector of real values.
 
+```octave
 TODO: vectorized cost function in octave
+```
 
 * Theta: Current parameters of the hypothesis. Matrix of Real values
 * X: Training set input values
@@ -61,12 +63,16 @@ TODO: vectorized cost function in octave
 
 Partial derivaties of the cost function.
 
+```octave
 TODO: Vectorized derivaty in octave
+```
 
 ### Logistic regression
 Categorisation problem. An input vector is mapped to one of k categories. 
 
+```octave
 TODO: vectorized cost function in octave
+```
 
 * Theta: Current parameters of the hypothesis. Matrix of Real values
 * X: Training set input values
@@ -78,14 +84,18 @@ TODO: vectorized cost function in octave
 
 Partial derivaties of the cost function.
 
-TODO: Vectorized derivaty in octave
+```octave
+# TODO: Vectorized derivaty in octave
+```
 
 ## Learning algorithms
 In order to find the minimum of the above described cost functions you must apply the hypotesis and the 
 partial deriverties for each input feature to a learning algorithm in order to find the optimal
 parameters according to your training set.
 
+```octave
 Theta_opt = learn(Theta_initial, cf, cf', j) 
+```
 
 * Theta_opt: Optimized parameters for your cost function. Vector of reals.
 * Theta_initial: Initial parameters for your cost function. Vector of reals. Con be the null vector.
@@ -105,19 +115,25 @@ cost and the partial derivative can be calculated for each training sample.
 ### Forward propagation
 Calculates the cost for one training sample.
 
-TODO: Vectorized form for forward propagation in octave.
+```octave
+# TODO: Vectorized form for forward propagation in octave.
+```
 
 ### Backward propagation
 Calculates the partial derivatieves for each training example.
 
-TODO: Vectorized form for backward propagation in octave.
+```octave
+# TODO: Vectorized form for backward propagation in octave.
+```
 
 ### Applying learning algorithems to neuronal networks
 Other than for polinomial functions the parameters are not in a single matrix but in a list of matrixes (one for teh calculation of each layer).
 In order to use the above mentioned Learning algorithms you have to flatten the parameters into one vector and afterwards 
 you must reload the optimized parameters into patrixes of the original sizes. 
 
-TODO: Vectorized implementation of forward and backward propagation in octave.
+```octave
+# TODO: Vectorized implementation of forward and backward propagation in octave.
+```
 
 # Optimisations to learning algorithms
 
