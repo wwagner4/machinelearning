@@ -162,9 +162,10 @@ lessen that problem.
 
 ```octave
 Jr(theta) = J(theta) + R # TODO Write the regularisation term in vectorized octave
+
+Jr()  ... Regularized cost function
+J()   ...Original cost function
 ```
-* Jr(...): Regularized cost function
-* J(...): Original cost function
 
 TODO: Check if there is an impact on the derivatives.
 
@@ -179,9 +180,9 @@ The algorithem for dimension reduction is PCA (principal component analysis). It
 of covariance eigenvectors. 
 
 ```octave
-sigma = (1 / m) * X * X' // Calculate covariance 
-[U,S,V] = svd(Sigma);    // Calculate the eigenvector
-Ureduce = U(:,1:k);      // Select the first k features of U
+sigma = (1 / m) * X * X' # Calculate covariance 
+[U,S,V] = svd(Sigma);    # Calculate the eigenvector
+Ureduce = U(:,1:k);      # Select the first k features of U
 
 Ureduce ... The reduced set of features. 
 k       ... The number of features after reduction
@@ -189,18 +190,28 @@ m       ... The number of features before reduction
 X       ... The original set uf features. Mmatrix (m x n)
 n       ... Number of learning examples TODO Better expression for learning examples
 sigma   ... Covariance matrix of X. M(m x m)
-svd()   ... Calculation of the eigenvector. 
+svd()   ... Calculation of the singular value decomposition. (something like eigenvector) 
 U       ... Reduced set of features containing all levels of reduction
 S       ... Matrix containing values for calculating the 'retained variance' 
 V       ... ??? Not needed for PCA
 ```
 
+### Result examination
+In order to find out if you have choosen the amount for k you should measuer the
+vaiance of the reduced dtaset. This can be done with the S vector which is one of the 
+return values of the svd function.
+
+```octave
+v = 
+```
 # Result examination
 
-After you have optimized the parameters of the hypothesis it is necessary to examine the behaviour of that function.
-There are several indexes that give you an idea how well your optimized hypothesis can predict meaningfull output values.
+After you have optimized the parameters of the hypothesis it is necessary 
+to examine the behaviour of that function. There are several indexes that give 
+you an idea how well your optimized hypothesis can predict meaningfull 
+output values.
 
-## Bias
+## Bios
 
 TODO
 
@@ -212,13 +223,47 @@ TODO
 
 TODO
 
-## Retained variance on dimension reduction
-
-TODO
-
 # Other machine learning Algorithms
 
 ## Clustering with the K-Means algorithm
- TODO
- 
+Another topic of unsuperwised learning is clustering. It finds a predefined number of
+clusters in an arbritary n dimensional dataset. 
+
+The K-Means algorithm works in the following way.
+
+1. Select k random points (centroids) in your data space.
+2. Measure the distence from all the data points to all centroids and choose assign
+   each point to the closest centroid to form k clusters.
+3. Find the aritmetic mean of each cluster and move its centroid to that position
+4. Continue at Step 2 until the centroids do not move (a lot) any longer in Step 3.
+
+```octave
+// Initialize values
+J = some number
+K = some number
+X = some Matrix(m x n)       
+C = some Matrix(K x n)  
+M = length(X)
+idx = zeros(M, 1);                                 # Result. Vector of length m
+for j = 1 : J
+  for m = 1 : M;
+  	dx = zeros(K, 1);
+  	for k = 1 : K;
+  		dx(k) = sum(sum((X(m, :) - C(k, :)) .^ 2 )); # calculate distance
+  	end
+  	[_, i] = min(dx);                              # find min distance
+  	idx(m) = i;                                    # find number of centroid
+  end
+for i = 1 : K;
+  clust = X([find(idx == i)], :);
+  C(i, :) = mean(clust);
+end
+
+M     ... Number of training samples 
+J     ... Number of iterations
+K     ... Number of centroids
+X     ... Input data. Matrix(n x M) 
+C     ... Centroids. Matrix(n x K)
+idx   ... Output containing the corresponding centroid for each data sample
+```
 
