@@ -148,12 +148,12 @@ vary in the same range it makes sense to apply linear transformations to achive 
 
 ```octave
 x1 = (x .- m(x)) ./ v(x) #TODO Check if correct. TODO change to a vectorized version that operates on X (Matrix of input values).
-```
 
-* x: Input values. Vector of reals
-* x1: Normalized input values. Vector of reals.
-* m(x): Arithmetic mean of the input values
-* v(x): Variance of the input values
+x     ... Input values. Vector of reals
+x1    ... Normalized input values. Vector of reals.
+m(x)  ... Arithmetic mean of the input values
+v(x)  ... Variance of the input values
+```
 
 ## Regularisation
 If your hypothes is a very 'advanced' function (e.g. a high graded polinomial) it might fit your training set very well but perform poor
@@ -169,13 +169,30 @@ Jr(theta) = J(theta) + R # TODO Write the regularisation term in vectorized octa
 TODO: Check if there is an impact on the derivatives.
 
 ## Dimension reduction
-Having lots of features (e.g 1000 or more) can lead to a poor performance of the learning algorithm. As in many practiacal some of these
-features. The algorithem for dimension reduction is PCA (principal component analysis).
+Having lots of features (e.g 1000 or more) can lead to a poor performance of the learning algorithm. 
+In practice several of these featuresa do have an almost linear relationship. These features can be 
+reduced to a single feature that represents the behaviour of those closly related features.
 
-Describe PCA TODO
+Another use case for PCA is visualisation of multidimensional data by redusing to 2 or 3 dimensions.
+
+The algorithem for dimension reduction is PCA (principal component analysis). It is based on the application 
+of covariance eigenvectors. 
 
 ```octave
-Jr(theta) = J(theta) + R # TODO Write the regularisation term in vectorized octave
+sigma = (1 / m) * X * X' // Calculate covariance 
+[U,S,V] = svd(Sigma);    // Calculate the eigenvector
+Ureduce = U(:,1:k);      // Select the first k features of U
+
+Ureduce ... The reduced set of features. 
+k       ... The number of features after reduction
+m       ... The number of features before reduction
+X       ... The original set uf features. Mmatrix (m x n)
+n       ... Number of learning examples TODO Better expression for learning examples
+sigma   ... Covariance matrix of X. M(m x m)
+svd()   ... Calculation of the eigenvector. 
+U       ... Reduced set of features containing all levels of reduction
+S       ... Matrix containing values for calculating the 'retained variance' 
+V       ... ??? Not needed for PCA
 ```
 
 # Result examination
