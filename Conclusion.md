@@ -180,7 +180,7 @@ The algorithem for dimension reduction is PCA (principal component analysis). It
 of covariance eigenvectors. 
 
 ```octave
-sigma = (1 / m) * X * X' # Calculate covariance 
+sigma = (1 / m) * X' * X # Calculate covariance 
 [U,S,V] = svd(Sigma);    # Calculate the eigenvector
 Ureduce = U(:,1:k);      # Select the first k features of U
 
