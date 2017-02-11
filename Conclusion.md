@@ -266,4 +266,17 @@ X     ... Input data. Matrix(n x M)
 C     ... Centroids. Matrix(n x K)
 idx   ... Output containing the corresponding centroid for each data sample
 ```
+## Anomaly detection
+Allowes you to detect cases where any of the values of one or more feature is out of the range of the values
+you used to train your anomaly detection algorithm.
+Weather a value is normal or not is based on the assumption that the values of your testset are gaussian (normal) 
+distributed. 
+
+There are two algorithems to calculate the probabillity for your values to be normal or not. 
+
+# Simple Anomaly detection: Just multiply the probabillities for each feature. 
+# Multivariant Anomaly detection: Calculate the probabillity of your value in a more advanced way. Can be used even if the features are correlated one to each other.
+
+
+
 
